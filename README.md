@@ -4,7 +4,7 @@ This Subgraph sources events from contracts of ConvX of Convergence Finance on M
 
 # Example Query
 
-Here we have an example query for getting contract address of pairs, their respective contract addresses of tokens and symbols, reserves, price in USD.
+Here we have an example query for getting contract address of pairs, their respective contract addresses of tokens and symbols, reserves, price.
 
 ```
 pairs (orderBy: timestamp, orderDirection: desc) {
