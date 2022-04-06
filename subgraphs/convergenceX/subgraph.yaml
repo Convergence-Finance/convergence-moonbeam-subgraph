@@ -1,0 +1,161 @@
+specVersion: 0.0.2
+description: convergence API
+repository: https://github.com/Convergence-Finance/conv-subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SwapFactory
+    network: ${NETWORK}
+    source:
+      address: "${SWAPFACTORY_ADDRESS}"
+      abi: SwapFactory
+      startBlock: ${SWAPFACTORY_BLOCK}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/swapFactory.ts
+      entities:
+        - Token
+        - Pair
+        - SwapPairFeeInfo
+        - TotalToken
+        - whiteListToken
+      abis:
+        - name: SwapFactory
+          file: ./abis/SwapFactory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handlePairCreated
+
+  - kind: ethereum/contract
+    name: StakingPools
+    network: ${NETWORK}
+    source:
+      address: "${STAKINGPOOLS_ADDRESS}"
+      abi: StakingPools
+      startBlock: ${STAKINGPOOLS_BLOCK}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/stakingPools.ts
+      entities:
+        - Pool
+        - StakingPair
+        - Stake
+        - UnStaked
+        - RewardRedeemed
+        - UserReward
+        - UserPoolData
+        - UserPoolDataSnapshot
+        - PoolInfoAndDataSnapshot
+        - RewardInfo
+      abis:
+        - name: StakingPools
+          file: ./abis/StakingPools.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: SwapPair
+          file: ./abis/SwapPair.json
+        - name: StakingPoolRewarder
+          file: ./abis/StakingPoolRewarder.json
+      eventHandlers:
+        - event: Staked(indexed uint256,indexed address,address,uint256)
+          handler: handleStaked
+        - event: Unstaked(indexed uint256,indexed address,address,uint256)
+          handler: handleUnstaked
+        - event: RewardRedeemed(indexed uint256,indexed address,address,uint256)
+          handler: handleRewardRedeemed
+        - event: PoolCreated(indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handlePoolCreated
+        - event: RewardInfoChanged(indexed uint256,address,uint256,uint256)
+          handler: handleRewardInfoChanged
+        - event: PoolEndBlockExtended(indexed uint256,uint256,uint256)
+          handler: handlePoolEndBlockExtended
+        - event: PoolMigrated(indexed uint256,address,address)
+          handler: handlePoolMigrated
+        - event: RewardInfoAdded(indexed uint256,address,uint256,uint8)
+          handler: handleRewardInfoAdded
+templates:
+  - kind: ethereum/contract
+    name: ERC20
+    network: ${NETWORK}
+    source:
+      abi: ERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Approval
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+
+  - kind: ethereum/contract
+    name: SwapPair
+    network: ${NETWORK}
+    source:
+      abi: SwapPair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Swap
+        - PairPricesLast
+        - PairPricesMinuter
+        - PairPricesHour
+        - PairPricesDay
+        - PairPricesEvery
+        - PairVolumeMinuter
+        - PairVolumeHour
+        - PairVolumeDay
+        - PairApproval
+        - Transaction
+        - SwapPairFeeInfoByLast
+        - SwapPairFeeInfoByHour
+        - Mint
+        - Burn
+        - Token
+        - TotalToken
+        - TotalLiquidityInSymbolByDay
+        - TokenVolumeHour
+        - TotalVolumeInSymbolByDay
+        - TotalVolumeInSymbolByHour
+        - TokenUsdPriceHour
+        - TokenUsdPriceEvery
+        - FreezePair
+        - UserLpTokenAvailable
+        - whiteListToken
+      abis:
+        - name: SwapPair
+          file: ./abis/SwapPair.json
+        - name: SwapFactory
+          file: ./abis/SwapFactory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Sync(uint112,uint112)
+          handler: handleSync
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handlePairApproval
+        - event: Freeze(indexed address)
+          handler: handleFreeze

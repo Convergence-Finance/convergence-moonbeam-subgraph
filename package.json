@@ -1,0 +1,37 @@
+{
+  "name": "moonbeam-subgraph",
+  "version": "0.1.0",
+  "repository": "https://github.com/Convergence-Finance/moonbeam-subgraph",
+  "author": "",
+  "license": "",
+  "scripts": {
+    "format": "prettier --write .",
+    "codegen": "env-cmd -f ./.env.convergencex.moonbeam.empty ./scripts/codegen.sh ./subgraphs/convergenceX",
+    "build": "env-cmd -f ./.env.convergencex.moonbeam.empty ./scripts/build.sh ./subgraphs/convergenceX",
+    "create:moonbeam:dev": "env-cmd -f ./.env.convergencex.moonbeam.dev ./scripts/create.sh",
+    "deploy:moonbeam:dev": "env-cmd -f ./.env.convergencex.moonbeam.dev ./scripts/deploy.sh ./subgraphs/convergenceX",
+    "remove:moonbeam:dev": "env-cmd -f ./.env.convergencex.moonbeam.dev ./scripts/remove.sh",
+    "create:moonbeam": "env-cmd -f ./.env.convergencex.moonbeam ./scripts/create.sh",
+    "deploy:moonbeam": "env-cmd -f ./.env.convergencex.moonbeam ./scripts/deploy.sh ./subgraphs/convergenceX",
+    "remove:moonbeam": "env-cmd -f ./.env.convergencex.moonbeam ./scripts/remove.sh"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.19.0",
+    "@graphprotocol/graph-ts": "^0.19.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/debug": "^4.1.7",
+    "@types/mocha": "^9.0.0",
+    "assemblyscript": "^0.19.17",
+    "chai": "^4.3.4",
+    "env-cmd": "^10.1.0",
+    "envsub": "^4.0.7",
+    "md5-file": "^5.0.0",
+    "mocha": "^9.1.2",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5",
+    "wabt": "^1.0.24"
+  }
+}
